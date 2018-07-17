@@ -1,0 +1,37 @@
+{layout name="woniu" /}
+<link rel="stylesheet" href="/static/css/index/index.css">
+<div id="index">
+    <h3 class="f18">当前训练营</h3>
+    <ul>
+        <li class="list" v-for="(item,index) in underway_lesson"  @click="skip(item.training_id,item.training_name,item.status)">
+            <img :src="item.training_image" alt="" width="300" height="160">
+            <div class="list-bg">
+                <p class="list-tit ellipsis-1 f18"><strong>{{item.training_name}}</strong></p>
+                <p class="f14 m-t-15 ellipsis-1">训练营时间：{{item.training_begin_at}}~{{item.training_finish_at}}</p>
+                <p class="f14 m-t-5 ellipsis-1">状态：{{item.status == 1 ? '未开始' : '进行中'}}</p>
+                <p class="f14 m-t-5 ellipsis-1">营内人数：{{item.training_current_count}}</p>
+                <p class="f14 m-t-5 ellipsis-1">上限人数：{{item.training_max_count}}</p>
+            </div>
+        </li>
+
+        <li class="add-lesson" @click="add_lesson">
+            <p class="iconfont f45 m-t-35">&#xe69c;</p>
+            <p class="f16 m-t-10">创建训练营</p>
+        </li>
+    </ul>
+
+    <h3 class="f18 m-t-60">已结束的训练营</h3>
+    <ul class="finish">
+        <li class="list" v-for="(item,index) in finish_lesson"  @click="skip(item.training_id,item.training_name,item.status)">
+            <img :src="item.training_image" alt="" width="300" height="160">
+            <div class="list-bg">
+                <p class="list-tit ellipsis-1 f18"><strong>{{item.training_name}}</strong></p>
+                <p class="f14 m-t-15 ellipsis-1">训练营时间：{{item.training_begin_at}}~{{item.training_finish_at}}</p>
+                <p class="f14 m-t-5 ellipsis-1">状态：{{item.status == 3 ? '已结束' : '进行中'}}</p>
+                <p class="f14 m-t-5 ellipsis-1">营内人数：{{item.training_current_count}}</p>
+                <p class="f14 m-t-5 ellipsis-1">上限人数：{{item.training_max_count}}</p>
+            </div>
+        </li>
+    </ul>
+</div>
+<script src="/static/js/index/index.js"></script>

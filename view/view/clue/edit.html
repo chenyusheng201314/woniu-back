@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>家装 — 后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/asset/layui/css/layui.css">
+    <link rel="stylesheet" href="/asset/css/style.css?<?php echo time(); ?>">
+
+    <script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+
+    <script src="/asset/layui/layui.js" type="text/javascript"></script>
+</head>
+<body>
+
+<div class="tpt_admin1">
+    <form class="layui-form layui-form-pane">
+        <div class="layui-tab layui-tab-brief" style="margin: 0;">
+            <ul class="layui-tab-title" style="margin-bottom: 10px;top: -10px;">
+                <li class="layui-this">网站配置</li>
+                <li>资料配置</li>
+                <li>客服配置</li>
+                <li>主题配置</li>
+                <li>标签配置</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">网站标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_TIT" value="" placeholder="请输入内容"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">域名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_COM" value="" placeholder="后面不要加斜杠/" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">作者</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_AUT" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备案</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_ICP" value="" placeholder="请输入内容"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_KEY" value="" placeholder="请输入内容"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">描述</label>
+                        <div class="layui-input-block">
+                            <textarea name="WEB_DES" placeholder="请输入内容" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="layui-tab-item">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">企业名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_MC" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">注册资本</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_ZB" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">企业法人</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_FR" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">注册时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_SJ" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">企业地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_DZ" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">企业介绍</label>
+                        <div class="layui-input-block">
+                            <textarea name="WEB_JS" placeholder="请输入内容" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-tab-item">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">联系人</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_LX" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">电话</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_DH" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_YX" value="" placeholder="请输入内容"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮编</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_YB" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">手机</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_MO" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">QQ（1）</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_QA" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">QQ（2）</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_QB" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="layui-tab-item">
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">主题名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_TPT" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">首页产品</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_SCP" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">首页文章</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_SWZ" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">产品分页</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_CPF" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">文章分页</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="WEB_WZF" value="" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="layui-tab-item">
+
+
+                    <div class="tpt_item">
+                        <input type="hidden" name="WEB_TAG" value="平面,UI,插画,网页,动漫,摄影,空间,工业,产品,三维,影视,手工艺,纯艺术">
+                        <div id="tpt_sel" class="tpt_sels" style="margin-top: 20px;">
+                  <span style="margin-bottom: 5px;float: left;">
+                    <a href="javascript:;">平面<em></em></a><a href="javascript:;">UI<em></em></a><a href="javascript:;">插画<em></em></a><a
+                          href="javascript:;">网页<em></em></a><a href="javascript:;">动漫<em></em></a><a
+                          href="javascript:;">摄影<em></em></a><a href="javascript:;">空间<em></em></a><a
+                          href="javascript:;">工业<em></em></a><a href="javascript:;">产品<em></em></a><a
+                          href="javascript:;">三维<em></em></a><a href="javascript:;">影视<em></em></a><a
+                          href="javascript:;">手工艺<em></em></a><a href="javascript:;">纯艺术<em></em></a>                  </span>
+                            <div class="layui-form-item" style="margin-bottom: 20px;">
+                                <label class="layui-form-label">标签</label>
+                                <div class="layui-input-block">
+                                    <input id="tpt_input" type="text" value="" autocomplete="off" class="layui-input"
+                                           style="width: 400px;float: left;margin-right: 20px;">
+                                    <button class="layui-btn" id="tpt_btn" type="button" style="background: #FF5722;">
+                                        添加标签
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <button class="layui-btn" lay-submit="" lay-filter="config_add">立即提交</button>
+
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="/asset/js/input.js"></script>
+<script>
+    layui.use(['form', 'element'], function () {
+        var form = layui.form,
+            element = layui.element,
+            jq = layui.jquery;
+        form.on('submit(config_add)', function (data) {
+            loading = layer.load(2, {
+                shade: [0.2, '#000']
+            });
+            var param = data.field;
+            jq.post('/config/add.html', param, function (data) {
+                if (data.code == 200) {
+                    layer.close(loading);
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.href = '/config/index.html';
+                    });
+                } else {
+                    layer.close(loading);
+                    layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+                }
+            });
+            return false;
+        });
+    })
+</script>
+
+</body>
+</html>

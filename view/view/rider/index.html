@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>家装 — 后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/asset/layui/css/layui.css">
+    <link rel="stylesheet" href="/asset/css/style.css?<?php echo time(); ?>">
+
+    <script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+
+    <script src="/asset/layui/layui.js" type="text/javascript"></script>
+</head>
+<body>
+
+<div class="tpt_admin1">
+    <form class="layui-form">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>名字</th>
+                <th>地区地址</th>
+                <th>期望薪水</th>
+                <th>是否在职</th>
+                <th>入职时间</th>
+                <th>手机</th>
+                <th>来源IP</th>
+                <th>创建时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($list as $v) : ?>
+            <tr>
+                <td><?php echo $v['rider_id']; ?></td>
+                <td><?php echo $v['rider_truename']; ?></td>
+                <td>
+                    <?php echo isset($city_data[$v['area_id']]) ? $city_data[$v['area_id']] : 'N/A'; ?>
+                    <?php echo $v['rider_address']; ?>
+                </td>
+                <td><?php echo isset($salary_data[$v['rider_salary_type']]) ? $salary_data[$v['rider_salary_type']] : 'N/A'; ?></td>
+                <td><?php echo isset($job_data[$v['rider_is_on_job']]) ? $job_data[$v['rider_is_on_job']] : 'N/A'; ?></td>
+                <td><?php echo isset($hiredate_data[$v['rider_hiredate_type']]) ? $hiredate_data[$v['rider_hiredate_type']] : 'N/A'; ?></td>
+                <td><?php echo $v['rider_cell']; ?></td>
+                <td><?php echo $v['rider_create_ip']; ?></td>
+                <td><?php echo $v['rider_create_at']; ?></td>
+            </tr>
+            <?php endforeach ?>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<script>
+    layui.use('form',function(){
+        var form = layui.form,
+            jq = layui.jquery;
+    })
+</script>
+
+</body></html>

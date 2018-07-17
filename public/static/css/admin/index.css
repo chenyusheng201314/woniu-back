@@ -1,0 +1,61 @@
+body {
+    width: 100%;
+    height: 100%;
+    background: url("/static/images/public/bg.png") no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+}
+.tpt-login{
+    float: right;
+    margin-right: 13%;
+}
+
+
+.tpt-login .tpt-logins i{
+    color: #fff !important;
+}
+.layui-form-checkbox span{
+    padding: 0 !important;
+    line-height: 22px !important;
+}
+.forget-pw{
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.layui-form-checked[lay-skin=primary] i{
+    border-color: #1e9fff;
+    background-color: #1e9fff;
+}
+.layui-form-checkbox[lay-skin=primary]:hover i:hover{
+    border-color: #1e9fff;
+}
+.layui-form-checkbox[lay-skin=primary]:hover i{
+    border-color: #1e9fff;
+}
+.js-forget .layui-form-item .yzm{
+    width: 240px;
+    float: left;
+}
+.js-forget .layui-form-item .get-yzm{
+    width: 100px;
+    height: 55px;
+    float: right;
+    text-align: center;
+    line-height: 55px;
+    color: #fff;
+    font-size: 16px;
+    background: #1e9fff;
+    cursor: pointer;
+    transition: background-color 0.2s linear;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+}
+.js-forget .layui-form-item .get-yzm:hover{
+    background-color: #31b1ff;
+}

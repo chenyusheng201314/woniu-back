@@ -1,0 +1,459 @@
+{layout name="woniu" /}
+<link rel="stylesheet" href="/static/css/edit/cropper.min.css">
+<link rel="stylesheet" href="/static/css/edit/index.css">
+<script src="/static/js/edit/ckeditor.js"></script>
+<script src="/static/js/edit/cropper.min.js"></script>
+<script src="/static/js/edit/laydate.js"></script>
+<script src="/static/js/edit/jqpaginator.min.js"></script>
+<script src="/static/js/edit/axios.min.js"></script>
+<script src="/static/js/edit/echarts.min.js"></script>
+<script src="/static/js/edit/moment.js"></script>
+
+<div id="edit">
+    <div class="edit-left">
+        <ul>
+            <li v-for="(item,index) in nav" @click="nav_change(index,item.tit)" :class="{active:item.active}">
+                <img :src="item.active? item.icon2 : item.icon" alt="" class="m-r-15">
+                <span class="f16">{{item.tit}}</span>
+            </li>
+        </ul>
+    </div>
+    <div class="edit-right">
+        <h3 class="f20">{{now_nav_name}}</h3>
+        <!--训练营管理-->
+        <div class="edit-xly" v-show="now_nav_state  == 0">
+            <p class="xly-tit f16">训练营基本信息</p>
+
+            <div class="xly-info m-t-15">
+                <span class="info-left f16">训练营名称：</span>
+                <input class="put-info" type="text" v-model="essential_info.training_name" :disabled="change_essential.name" maxlength="15">
+            </div>
+
+            <div class="xly-info m-t-15">
+                <span class="info-left f16">人数上限：</span>
+                <input class="put-info" type="text" v-model="essential_info.training_max_count" :disabled="change_essential.max_per" maxlength="6">
+            </div>
+
+            <div class="xly-info m-t-15">
+                <span class="info-left f16">开营时间：</span>
+                <input class="put-info" type="text" id="start_time" placeholder="请选择日期" v-model="essential_info.training_begin_at" :disabled="change_essential.start_time">
+            </div>
+
+            <div class="xly-info m-t-15">
+                <span class="info-left f16">结束时间：</span>
+                <input class="put-info" type="text" id="end_time" placeholder="请选择日期" v-model="essential_info.training_finish_at" :disabled="change_essential.end_time">
+            </div>
+
+            <div class="xly-info m-t-15">
+                <span class="info-left f16">每天打卡时间：</span>
+                <input class="data-time" type="text" placeholder="请选择日期" id="data_start" v-model="essential_info.training_task_begin_at"  :disabled="change_essential.clock_in">
+                <span class="m-l-15">至</span>
+                <input class="data-time" type="text" placeholder="请选择日期" id="data_end" v-model="essential_info.training_task_finish_at" :disabled="change_essential.clock_out">
+            </div>
+
+            <div class="xly-info m-t-15" style="height: 150px">
+                <span class="info-left f16">训练营图片：</span>
+
+                <img :src="upload_img" alt="" class="file-img m-l-15" width="250">
+                <button class="btn waves-effect waves-light btn-primary center-block center-block1" data-toggle="modal"
+                        data-target="#cropper" :disabled="change_essential.up_img">
+                    上传图片
+                </button>
+            </div>
+            <p class="xly-tit f16 m-t-50">训练营介绍</p>
+            <!--富文本编辑器-->
+            <div class="rich-editor">
+                <div id="toolbar-container"></div>
+                <div id="editor" name="editor">
+                </div>
+                <div class="edit-cover" v-if="change_essential.con"></div>
+            </div>
+            <button class="btn waves-effect waves-light btn-primary center-block m-t-30" @click="training_submit" :disabled="change_essential.save" >保存</button>
+        </div>
+
+        <!--每日打卡-->
+        <div class="date-clock" v-show="now_nav_state  == 1">
+            <div class="date-clock-time">
+                <p>
+                    <img src="/static/images/data-clock/icon-time.png" alt="">
+                    <span class="m-l-5">训练营时间：{{clock_info.start_time}} 至 {{clock_info.end_time}}</span>
+                </p>
+                <div class="date-tiem">
+                    <table :style="clock_table_width">
+                        <tr>
+                            <th v-for="(item,index) in clock_info.time" :colspan="item.detail.length" :style="item.bg">{{item.moun}}</th>
+                        </tr>
+                        <tr>
+                            <template v-for="(item,index) in clock_info.time">
+                                <td class="td1" v-for="(it,ind) in item.detail">
+                                    {{it.week}}
+                                    <div class="td-cover" v-if="it.is_expire == 1? true :false"></div>
+                                </td>
+                            </template>
+                        </tr>
+                        <tr>
+                            <template v-for="(item,index) in clock_info.time">
+                                <td class="td2" v-for="(it,ind) in item.detail" :class="{data_now:it.is_active == 1? true : false}" @click="date_choose(it.is_expire,ind,index,it.date)">
+                                    <p class="m-b-35">{{it.day}}</p>
+                                    <p v-if="it.is_topic == 0? false: true"> <span class="iconfont f16" style="color: #D43F55;">&#xe757;</span>课题</p>
+                                    <p v-if="it.is_topic== 0? false: true"><span class="iconfont f16" style="color: #D43F55;">&#xe757;</span>作业</p>
+                                    <div class="td-cover" v-if="it.is_expire == 1? true :false"></div>
+                                </td>
+                            </template>
+                        </tr>
+                    </table>
+
+                    <div class="turn-left">
+                        <img src="/static/images/data-clock/icon-left.png" alt="" @click="turn_left">
+                    </div>
+                    <div class="turn-right">
+                        <img src="/static/images/data-clock/icon-right.png" alt="" @click="turn_rigth">
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="date-bottom m-t-30">
+                <p>
+                    <img src="/static/images/data-clock/icon-class.png" alt="图片不见鸟">
+                    <span class="m-l-5">今日课题</span>
+                </p>
+                <div class="class-tit">
+                    <div class="input-group">
+                        <label class="lab">课题名称 :</label>
+                        <input type="text" class="form-control lesson-name" maxlength="30" v-model="class_info.topic_tit" :disabled="class_info.disable">
+                    </div>
+                </div>
+
+                <div class="class-tit">
+                    <div class="input-group">
+                        <label class="lab">课题简述 :</label>
+                        <textarea type="text" class="form-control lesson-name" maxlength="100" v-model="class_info.topic_content" :disabled="class_info.disable"></textarea>
+                    </div>
+                </div>
+
+                <p>
+                    <img src="/static/images/data-clock/icon-class.png" alt="图片不见鸟">
+                    <span class="m-l-5">今日作业</span>
+                </p>
+
+                <div class="class-tit">
+                    <div class="input-group">
+                        <label class="lab">作业要求 :</label>
+                        <textarea type="text" class="form-control lesson-name" maxlength="100" v-model="class_info.topic_require" :disabled="class_info.disable"></textarea>
+                    </div>
+                </div>
+
+                <button class="btn waves-effect waves-light btn-primary center-block m-t-30 m-b-30" :disabled="class_info.disable" @click="lesson_submit">保存</button>
+            </div>
+
+        </div>
+
+        <!--学员管理-->
+        <div class="user-manage" v-show="now_nav_state == 2">
+            <div class="user-condition">
+
+                <div class="user-list">
+                    <span class="f16">昵称：</span>
+                    <input type="text" v-model="user_condition.name">
+                </div>
+
+                <div class="user-list m-l-50">
+                    <span class="f16 m-r-15" style="float: left">真实姓名：</span>
+                    <input type="text" v-model="user_condition.real_name">
+                </div>
+
+                <div class="user-list m-l-50">
+                    <span class="f16 m-r-15" style="float: left">性别：</span>
+                    <div class="user-select" @click="sex_select_type_change">
+                        <span>{{user_condition.sex}}</span>
+                        <a href="javascript:;" class="iconfont">&#xe656;</a>
+                        <ul class="select-lists" v-show="sex_select_show">
+                            <li v-for="item in user_sex" @click="sex_choose(item)">{{item}}</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="user-list m-t-20" style="clear: both">
+                    <span class="f16 m-r-15" style="float: left">入营时间：</span>
+                    <input class="put-info" type="text" id="user_start_time" placeholder="请选择日期">
+                    <span class="m-l-15 m-r-15">至</span>
+                    <input class="put-info" type="text" id="user_end_time" placeholder="请选择日期">
+                </div>
+                <div class="user-list m-t-20 m-l-50">
+                    <span class="f16 m-r-15" style="float: left">排行榜：</span>
+                    <div class="user-select" @click="ranking_select_type_change">
+                        <span>{{user_condition.ranking}}</span>
+                        <a href="javascript:;" class="iconfont">&#xe656;</a>
+                        <ul class="select-lists" v-show="ranking_select_show">
+                            <li v-for="item in user_ranking" @click="ranking_choose(item)">{{item}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <button class="search m-t-20 m-l-50" @click="user_search">搜索</button>
+            </div>
+            <div class="user-con">
+                <table>
+                    <tr>
+                        <th style="width: 50px;">序号</th>
+                        <th class="">营内用户</th>
+                        <th>真实姓名</th>
+                        <th>性别</th>
+                        <th>入营日期</th>
+                        <th>打卡次数</th>
+                        <th>总学分</th>
+                        <th>本周学分</th>
+                        <th>今日学分</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr v-for="(item,index) in user_lists">
+                        <td>{{index + 1}}</td>
+                        <td class="text-left user-msg">
+                            <img :src="item.user_avatar" alt="">
+                            <span class="m-l-5">{{item.user_nickname}}</span>
+                        </td>
+                        <td>
+                            <span class="m-l-5">{{item.user_truename}}</span>
+                        </td>
+                        <td>
+                            <span class="m-l-5">{{item.user_gender}}</span>
+                        </td>
+                        <td>
+                            <span class="m-l-5">{{item.joins_create_at}}</span>
+                        </td>
+                        <td>
+                            <span class="m-l-5">{{item.task_count}}</span>
+                        </td>
+                        <td>
+                            <span class="m-l-5">{{item.point_amount_total}}</span>
+                        </td>
+                        <td>
+                            <span class="m-l-5">{{item.point_amount_week}}</span>
+                        </td>
+                        <td>
+                            <span class="m-l-5">{{item.point_amount_today}}</span>
+                        </td>
+                        <td>
+                            <span class="m-r-15 caozuo"  data-toggle="modal"
+                                  data-target="#task" @click="modal_task(index,item.user_id)">查看</span>
+                            <span class="m-l-15 caozuo" @click="user_delete(index,item.user_id)">移除</span>
+                        </td>
+                    </tr>
+                </table>
+
+                <!--分页-->
+                <div class="col-12 text-center pag" v-show="paging_information.show">
+                    <ul class="pagination pagination-sm" id="paging">
+                    </ul>
+                    <ul class="pagination pagination-sm">
+                        <li class="page">
+                            <a class="jump" href="#!" style="padding:0">
+                                <input type="text" class="form-control" value="1"
+                                       style="width: 48px; border:0;height: 35px;">
+                            </a>
+                        </li>
+                        <li class="page">
+                            <a href="javascript:void(0);">跳转</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!--资料库管理-->
+        <div class="data-bank" v-show="now_nav_state == 3">
+            <button class="btn waves-effect waves-light btn-primary center-block center-block2" @click="file_add">添加文件</button>
+            <ul class="data-lists">
+                <li v-for="(item,index) in file_list">
+                    <div class="list-con">
+                        <span class="data-name">资料名称：</span>
+                        <input type="text" maxlength="12" class="file-name" v-model="item.file_name" :disabled="item.state == 0? false :true">
+                    </div>
+                    <div class="list-con m-l-100 " v-show="item.state == 1? true : false">
+                        <img src="/static/images/ziliao/name.png" alt="" width="26">
+                        <span class=" f16 m-l-5">{{item.file_name}}.{{item.file_extension}}</span>
+                    </div>
+                    <div class="list-con m-r-50">
+
+                    </div>
+                    <div class="list-con data-file" v-show="item.state == 0? true : false">
+                        <button class="list-btn">
+                            上传文件
+                            <input type="file" class="file_up">
+                        </button>
+                        <span class="data_name m-l-10"></span>
+                    </div>
+                    <div class="list-con-r" id="data-save" v-show="item.state == 0 ? true : false" @click="data_save(index)">
+                        <img src="/static/images/ziliao/save.png" alt="" width="26">
+                        <span class="f16 m-l-5 save" >保存</span>
+                    </div>
+                    <div class="list-con-r" id="data-edit" v-show="item.state == 1 ? true : false" @click="date_edit(index,item.document_id)">
+                        <img src="/static/images/ziliao/edit.png" alt="" width="26">
+                        <span class="f16 m-l-5 edit">编辑</span>
+                    </div>
+                    <span class="delete_list iconfont" v-show="item.state == 0 ? true : false" @click="delete_file(index,item.file_id)">&#xe604;</span>
+                </li>
+            </ul>
+
+            <!--分页-->
+            <div class="col-12 text-center pag" v-show="paging_information2.show">
+                <ul class="pagination pagination-sm" id="paging2">
+                </ul>
+                <ul class="pagination pagination-sm">
+                    <li class="page">
+                        <a class="jump" href="#!" style="padding:0">
+                            <input type="text" class="form-control" value="1"
+                                   style="width: 48px; border:0;height: 35px;">
+                        </a>
+                    </li>
+                    <li class="page">
+                        <a href="javascript:void(0);">跳转</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--数据统计-->
+        <div class="statistics" v-show="now_nav_state == 4">
+            <h3 class="f16">概况</h3>
+            <ul class="statistics-top">
+                <li class="col-md-2 col-lg-2 top-list">
+                    <div class="col-md-8 col-lg-8 top-list-right">
+                        <p class="data-num m-t-20" style="color: #ff8761">{{statistics.training_current_count}}</p>
+                        <p class="data-js">营内人数</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 top-list-left" style="background-color: #ff8761">
+                        <img src="/static/images/data/icon1.png" alt="图片不见鸟">
+                    </div>
+                </li>
+                <li class="col-md-2 col-lg-2 top-list">
+                    <div class="col-md-8 col-lg-8 top-list-right">
+                        <p class="data-num m-t-20" style="color: #57bdde">{{statistics.digg_all_count}}</p>
+                        <p class="data-js">打卡总次数</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 top-list-left" style="background-color: #57bdde">
+                        <img src="/static/images/data/icon1.png" alt="图片不见鸟">
+                    </div>
+                </li>
+                <li class="col-md-2 col-lg-2 top-list">
+                    <div class="col-md-8 col-lg-8 top-list-right">
+                        <p class="data-num m-t-20" style="color: #b198dc">{{statistics.user_today_count}}</p>
+                        <p class="data-js">今日入营人数</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 top-list-left" style="background-color: #b198dc">
+                        <img src="/static/images/data/icon1.png" alt="图片不见鸟">
+                    </div>
+                </li>
+                <li class="col-md-2 col-lg-2 top-list">
+                    <div class="col-md-8 col-lg-8 top-list-right">
+                        <p class="data-num m-t-20" style="color: #6dc7be">{{statistics.digg_today_count}}</p>
+                        <p class="data-js">今日打卡次数</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 top-list-left" style="background-color: #6dc7be">
+                        <img src="/static/images/data/icon1.png" alt="图片不见鸟">
+                    </div>
+                </li>
+
+
+
+                <li class="col-md-8 list-bar" style="max-width: 30%;">
+                    <div class="col-md-8 col-lg-7 bor-con">
+                        <span></span>
+                    </div>
+                    <div class="col-md-4 col-lg-5 bar-right">
+                        <p class="bar-right-top">
+                            <span style="color: #2684b8;font-size: 30px;">{{statistics.current_day}}</span>
+                            / {{statistics.all_day}}
+                            <span style="font-size: 16px">天</span>
+                        </p>
+                        <p class="bar-js">{{statistics.training_name}}</p>
+                    </div>
+                </li>
+            </ul>
+
+            <h3 class="f16 m-t-100">营内人数</h3>
+            <div id="echarts-bar"></div>
+            <h3 class="f16 m-t-100">打卡情况</h3>
+            <div id="echarts-line"></div>
+        </div>
+    </div>
+
+
+    <!-- Modal 图片裁剪  -->
+    <div class="modal fade bs-example-modal-lg" id="cropper" style="z-index: 1051;" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog" style="width: 978px;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">图片裁剪</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true"><i class="iconfont">&#xe61a;</i></span></button>
+                </div>
+                <div class="text-left modal-body-cropper">
+
+                    <div class="img-container"><img id="image" :src="cropper_img" class="img-responsive" alt="Picture">
+                    </div>
+                    <div class="docs-buttons">
+                        <div class="btn-group center-block select-img">
+                            <label class="btn btn-secondary btn-outline btn-upload" for="inputImage"
+                                   title="Upload image file">
+                                <input type="file" class="sr-only" id="inputImage" name="file" accept="image/*">
+                                <span class="docs-tooltip" data-toggle="tooltip">上传图片</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer docs-buttons">
+                    <button type="button" class="btn waves-effect waves-light btn-default" data-dismiss="modal">取消
+                    </button>
+                    <button type="button" class="btn waves-effect waves-light btn-success" data-dismiss="modal"
+                            data-method="getCroppedCanvas">
+                        <span class="docs-tooltip" data-toggle="tooltip"
+                              title="$().cropper(&quot;getCroppedCanvas&quot;)"> 提交 </span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 作业  -->
+    <div class="modal fade bs-example-modal-lg" id="task" style="z-index: 1051;" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog" style="width: 830px;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">作业详情-{{user_truename}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true"><i class="iconfont">&#xe61a;</i></span></button>
+                </div>
+                <div class="text-left modal-body-task">
+                    <ul>
+                        <li class="task-li" v-for="(item,index) in task" v-key="index">
+                            <div class="task-top">
+                                <div class="pull-right">
+                                    <span @click="task_show(index,item.task_id)" class="switch switch-point" :class="{active:item.task_show==1}"><small></small></span>
+                                </div>
+                                <div>
+                                    <div class="topic-title">标题：{{item.topic_title}}</div>
+                                    <div class="topic-time">时间：{{item.task_create_at}}</div>
+                                </div>
+                            </div>
+                            <div class="task-content">内容：
+                                {{item.task_content}}
+                            </div>
+                            <div class="task-photos" v-if="item.task_photos.length">
+                                <img class="task-photo" v-for="it in item.task_photos" :src="it" alt="">
+                            </div>
+                            <div class="text-right task-bottom">
+                                <span class="iconfont task-msg" style="color: #D43F55;">&#xe656;</span><span>{{item.task_digg_up}}</span>
+                                <span class="iconfont task-msg" style="color: #D43F55;">&#xe656;</span><span>{{item.task_comment_count}}</span>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/js/edit/index.js"></script>
